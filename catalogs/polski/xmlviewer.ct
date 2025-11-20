@@ -1,0 +1,124 @@
+## version $VER: xmlviever.catalog 1.0 (22.04.2009)
+## codeset 0
+## language polski
+## chunk AUTH Michal Zukowski
+;
+;
+; Catalog descriptor for plot.mcc
+;
+MSG_WRONGEXPTATVERS
+Niepoprawna wersja \"expat.library\"!\n
+;Wrong version of \"expat.library\"!\n
+;
+MSG_CUSTCLASSFAIL
+Nie mo¿na utworzyæ klasy.\n
+;Failed to create custom class.\n
+;
+MSG_APPFAIL
+Nie mo¿na utworzyæ aplikacji.\n
+;Failed to create Application.\n
+;
+MSG_EXPATFAIL
+;Nie mogê otworzyæ \"expat.library\" >= 4.0\n
+;Unable to open \"expat.library\" >= 4.0\n
+;
+MSG_ASLSELECTFILE
+Wybierz plik XML:
+;Select XML File
+;
+MSG_OPENALL
+Otwórz wszystko
+;Open All
+;
+MSG_CLOSEALL
+Zamknij wszystko
+;Close All
+;
+MSG_MENU_ABOUT
+O programie...
+;About...
+;
+MSG_MENU_OPEN
+Wczytaj...
+;Open...
+;
+MSG_MENU_QUIT
+Skoñcz
+;Quit
+;
+MSG_MENU_SAVE
+Zapisz...
+;Save...
+;
+MSG_MENU_SAVEFORM
+Zapisz z wciêciami...
+;Save formatted...
+;
+MSG_MENU_PROJECT
+Projekt
+;Project
+;
+MSG_SEARCH_LABEL
+Szukaj
+;Search
+;
+MSG_SEARCH_VALUES
+Warto¶ci elementów
+;Element values
+;
+MSG_SEARCH_NAMES
+Nazwy elementów
+;Element names
+;
+MSG_SEARCH_ATTRIBS
+Atrybuty (nazwy i warto¶ci)
+;Attributes (name & values)
+;
+MSG_SEARCH_PREV_HELP
+Wyszukaj poprzedni element.
+;Search previous element.
+;
+MSG_SEARCH_PREV
+Poprzedni
+;Prev
+;
+MSG_SEARCH_NEXT_HELP
+Wyszukaj nastêpny element.
+;Search next element.
+;
+MSG_SEARCH_NEXT 
+Nastêpny
+;Next
+;
+MSG_LIST_ATTR 
+Atrybut
+;Atribute
+;
+MSG_LIST_VAL
+Warto¶æ
+;Value
+;
+MSG_MENU_CUT 
+Wytnij
+;Cut
+;
+MSG_MENU_COPY
+Kopiuj
+;Copy
+;
+MSG_MENU_PASTE 
+Wklej
+;Paste
+;
+MSG_MENU_EDIT
+Edycja
+;Edit
+;
+MSG_ABOUT_HOMEPAGE
+Strona domowa:
+;Project homepage:
+;
+MSG_UNABLETOOPENFILE 
+Nie mogê otworzyæ
+;Error opening
+;

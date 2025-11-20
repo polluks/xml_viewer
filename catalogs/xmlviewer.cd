@@ -1,0 +1,90 @@
+;
+; Catalog descriptor for xmlviewer
+;
+MSG_WRONGEXPTATVERS (//)
+Wrong version of \"expat.library\"!\n
+;
+MSG_CUSTCLASSFAIL (//)
+Failed to create custom class.\n
+;
+MSG_APPFAIL (//)
+Failed to create Application.\n
+;
+MSG_EXPATFAIL (//)
+Unable to open \"expat.library\" >= 4.0\n
+;
+MSG_ASLSELECTFILE (//)
+Select XML File
+;
+MSG_OPENALL (//)
+Open All
+;
+MSG_CLOSEALL (//)
+Close All
+;
+MSG_MENU_ABOUT (//)
+About...
+;
+MSG_MENU_OPEN (//)
+Open...
+;
+MSG_MENU_QUIT (//)
+Quit
+;
+MSG_MENU_SAVE (//)
+Save...
+;
+MSG_MENU_SAVEFORM (//)
+Save formatted...
+;
+MSG_MENU_PROJECT (//)
+Project
+;
+MSG_SEARCH_LABEL (//)
+Search
+;
+MSG_SEARCH_VALUES (//)
+Element values
+;
+MSG_SEARCH_NAMES (//)
+Element names
+;
+MSG_SEARCH_ATTRIBS (//)
+Attributes (name & values)
+;
+MSG_SEARCH_PREV_HELP (//)
+Search previous element.
+;
+MSG_SEARCH_PREV (//)
+Prev
+;
+MSG_SEARCH_NEXT_HELP (//)
+Search next element.
+;
+MSG_SEARCH_NEXT (//)
+Next
+;
+MSG_LIST_ATTR (//)
+Atribute
+;
+MSG_LIST_VAL (//)
+Value
+;
+MSG_MENU_CUT (//)
+Cut
+;
+MSG_MENU_COPY (//)
+Copy
+;
+MSG_MENU_PASTE (//)
+Paste
+;
+MSG_MENU_EDIT (//)
+Edit
+;
+MSG_ABOUT_HOMEPAGE (//)
+Project homapage:
+;
+MSG_UNABLETOOPENFILE (//)
+Error opening
+;

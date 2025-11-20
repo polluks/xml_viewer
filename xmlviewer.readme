@@ -1,0 +1,35 @@
+Short:        Simple XML viewer
+Author:       Michal Zukowski <rzookol poczta.onet.pl>
+Uploader:     Michal Zukowski <rzookol poczta onet pl>
+Type:         text/show
+Version:      0.16
+Requires:     expat.library, urltext.mcc
+Architecture: ppc-morphos >= 2.0 or 1.4.5 with update
+
+
+XML Viewer is simply MUI application to view content of XML files.
+It is used mainly to test my OpenOffice ODS export in plot.mcc class.
+
+NEWS:
+- XML header support   (0.10)
+- Save support         (0.10)
+- Searching            (0.11)
+
+- Cliboard support     (0.12)
+  Context menu with Cut Copy was added.
+  (items <subtrees> under mouse pointer are converted to
+  plain xml text files)
+
+- Shortcuts & Paste    (0.14) 
+  (active item - command+c, command+v, command+x)
+  + Overall fixes
+
+- More fixes           (0.15)
+- Locales, comments    (0.16)
+
+TODO:
+- Edit mode
+- Drag&Drop
+
+Latest expat.library:
+http://alfie.altervista.org/soft/index.html

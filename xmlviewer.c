@@ -161,7 +161,7 @@ Object checkmarks[CHM_OBJECTCOUNT];
 Object *list;
 char *filename = NULL;
 XML_Parser parser;
-struct XMLTree m_drzewo;
+struct XMLTree m_tree;
 
 ///
 /// CreateMenuitems()
@@ -272,13 +272,13 @@ ULONG MyApp_New( struct IClass *cl, Object *obj, struct opSet *msg )
                       MUIA_Window_ID, MAKE_ID( 'T', 'R', 'E', 'E' ),
                       MUIA_Window_AppWindow, TRUE,
                       WindowContents, VGroup,
-                      // górne przyciski
+                        // top buttons
                       Child, HGroup,
                       Child, bt_open_nodes = KeyButton( GetCatalogStr( Cat, MSG_OPENALL, "Open All" ), 'o' ),
                       Child, bt_close_nodes = KeyButton( GetCatalogStr( Cat, MSG_CLOSEALL, "Close All" ), 'a' ),
                       End,
 
-                      // drzewko i list atrybutów
+                        // tree view and attribute list
                       Child, HGroup,
                       Child, ListviewObject,
                       MUIA_Listview_List, lt_nodes = NewObject( xmlviewertreeClass->mcc_Class, NULL, TAG_DONE ),
@@ -297,7 +297,7 @@ ULONG MyApp_New( struct IClass *cl, Object *obj, struct opSet *msg )
                                      TAG_END ),
                       End,
 
-                      // szukanie
+                        // search
                       Child, MUI_NewObject( MUIC_Group,
                                             GroupFrame,
                                             MUIA_FrameTitle, GetCatalogStr( Cat, MSG_SEARCH_LABEL, "Search" ),
@@ -524,18 +524,18 @@ ULONG MyApp_Load( struct IClass *cl, Object *obj,  struct MUIP_App_Filename *msg
             DoMethod( lt_nodes, MUIM_Listtree_Remove, MUIV_Listtree_Remove_ListNode_Root, MUIV_Listtree_Remove_TreeNode_All, 0 );
 
             XML_ParserReset( parser, 0 );
-            m_drzewo.drzewo = lt_nodes;
-            m_drzewo.depth = 0;
-            XML_SetUserData( parser, &m_drzewo );
+            m_tree.tree = lt_nodes;
+            m_tree.depth = 0;
+            XML_SetUserData( parser, &m_tree );
             XML_SetElementHandler( parser, startElement, endElement );
             XML_SetCharacterDataHandler( parser,  default_hndl );
             XML_SetXmlDeclHandler( parser, decl_hndl );
             XML_SetCommentHandler( parser, comment_hndl );
 
-            // jesli cos szukalismy to cofamy siê w nowym pliku do pocz±tku
+            // if a previous search was active, reset to the start of the new file
             data->last_search = -1;
 
-            strcpy( m_drzewo.filename, FilePart( msg->filename ) );
+            strcpy( m_tree.filename, FilePart( msg->filename ) );
 
             do
             {
@@ -615,7 +615,7 @@ ULONG MyApp_Search( struct IClass *cl, Object *obj,  struct MUIP_App_FileReq *ms
 
     struct MUIS_Listtree_TreeNode *treenode;
     char *string = NULL;
-    int pos, found, licznik, licznik2;
+    int pos, found, attribute_index, entry_count;
     int is_values = 0, is_names = 0, is_attributes = 0;
     int Nr;
     struct DataNode *dn;
@@ -646,7 +646,7 @@ ULONG MyApp_Search( struct IClass *cl, Object *obj,  struct MUIP_App_FileReq *ms
 		
 		// pos=last%Nr;
 		pos = data->last_search;
-		// sprawdzamy czy w przod czy w tyl szukamy
+                  // determine whether to search forward or backward
 		if( msg->mode )
 		{
 			pos++;
@@ -660,7 +660,7 @@ ULONG MyApp_Search( struct IClass *cl, Object *obj,  struct MUIP_App_FileReq *ms
 		get( checkmarks[CHM_ATTRIBUTES], MUIA_Selected, &is_attributes );
 		get( checkmarks[CHM_NAMES], MUIA_Selected, &is_names );
 
-		// jesli nic nie jest zaznaczone w checkmarkach to nic nie szukamy
+                  // do not search if no checkmarks are selected
 		if( is_values || is_attributes || is_names )
 			//KPrintF("Nr: %d, last:%d\n", Nr, pos);
 			while( 1 )
@@ -694,7 +694,7 @@ ULONG MyApp_Search( struct IClass *cl, Object *obj,  struct MUIP_App_FileReq *ms
 							if( ( tmp_list = tmp->attr_list ) )
 							{
 								found = 0;
-								licznik = 0;
+                                                                  attribute_index = 0;
 								for( dn = ( struct DataNode* )tmp_list->mlh_Head;  dn->Node.mln_Succ;  dn = ( struct DataNode* )dn->Node.mln_Succ )
 								{
 									if( dn )
@@ -709,7 +709,7 @@ ULONG MyApp_Search( struct IClass *cl, Object *obj,  struct MUIP_App_FileReq *ms
 											found = 1;
 											break;
 										}
-										licznik++;
+                                                                                  attribute_index++;
 									}
 									else
 									{
@@ -724,7 +724,7 @@ ULONG MyApp_Search( struct IClass *cl, Object *obj,  struct MUIP_App_FileReq *ms
 						}
 					}
 
-					// sprawdzamy czy w przod czy w tyl szukamy
+                                          // determine whether to search forward or backward
 					if( msg->mode )
 					{
 						pos++;
@@ -734,22 +734,22 @@ ULONG MyApp_Search( struct IClass *cl, Object *obj,  struct MUIP_App_FileReq *ms
 						pos--;
 					}
 				}
-				else     // doszlismy do konca to wypadaloby zaczac od poczatku
+                                  else     // reached the end, restart from the beginning
 				{
 					data->last_search = -1;
 					break;
 				}
 			}
-		// otwieramy znaleznionego noda
+                  // open the located node
 		DoMethod( lt_nodes, MUIM_Listtree_Open, MUIV_Listtree_Open_ListNode_Parent, treenode, 0 );
 
-		// i przechodzimy do niego robiac go aktywnym
+                  // make the located node active
 		set( lt_nodes, MUIA_Listtree_Active, treenode );
 
 		if( found )
 		{
-			get( list, MUIA_List_Entries, &licznik2 );
-			set( list, MUIA_List_Active, licznik2 - licznik - 1 );
+                          get( list, MUIA_List_Entries, &entry_count );
+                          set( list, MUIA_List_Active, entry_count - attribute_index - 1 );
 		}
 		return TRUE;
 
@@ -859,7 +859,7 @@ int main( int argc, char **argv )
         }
         else
         {
-            // klasa drzewka
+            // tree class
             if( ( xmlviewertreeClass = CreatexmlviewertreeClass() ) )
             {
 

@@ -16,11 +16,12 @@
 
 struct XMLTree
 {
-    Object *drzewo;                             // obiekt tree listy
-    char filename[102];      			// 102 ograniczenie dosu
-    struct MUIS_Listtree_TreeNode *tn[512];     // ciekawe czy moze byæ wiecej obiektów
+    Object *tree;                               // tree list object
+    char filename[102];                         // 102 DOS limitation
+    struct MUIS_Listtree_TreeNode *tn[512];     // consider increasing if more objects appear
     int depth;
 };
+
 
 struct DataNode
 {

@@ -34,7 +34,7 @@
 
 extern Object *list;
 extern XML_Parser parser;
-extern struct XMLTree m_drzewo;
+extern struct XMLTree m_tree;
 extern struct Catalog *Cat;
 char buffer [1024]; 
 
@@ -80,17 +80,17 @@ M_HOOK(active, APTR obj, APTR dana)
     struct MinList *tmp_list;
     struct xml_data *tmp_xml;
 
-    // czyscimy obiekt listy atrybutów
+    // clear attribute list object
     DoMethod(list, MUIM_List_Clear);
 
-    // pobieramy wkaznik na klikniêty obiekt treelisty
+    // get pointer to the clicked tree list object
     if((active = (struct MUIS_Listtree_TreeNode *)DoMethod(obj, MUIM_Listtree_GetEntry, NULL, MUIV_Listtree_GetEntry_Position_Active, 0)))
     {
         if((tmp_xml = (struct xml_data*)(active->tn_User)))
         {
             if(tmp_xml->type & XML_VALUES)
             {
-        	// pobieramy listê atrybutów
+                // fetch the attribute list
         	if((tmp_list = tmp_xml->attr_list))
         	{
             	    //DBG KPrintF("Dupa %x\n", tmp_list);
@@ -175,7 +175,7 @@ ULONG xmlviewertree_New(struct IClass *cl, Object *obj, struct opSet *msg)
     data = INST_DATA(cl, obj);
     data->menu = NULL;
 
-    // obsluga schowka
+    // clipboard handling
     rc = FALSE;
     if ((data->iffh = AllocIFF()))
     {
@@ -247,14 +247,14 @@ ULONG xmlviewertree_Dispose(struct IClass *cl, Object *obj, Msg msg)
 {
     struct xmlviewertree_Data *data = INST_DATA(cl, obj);
 
-    // wywalamy stare dynamiczne menu na koniec jesli bylo jakies wogóle
+    // remove any existing dynamic menu when disposing
     if(data->menu)
     {
     	MUI_DisposeObject(data->menu);
     	data->menu = NULL;
     }
 
-    // konczymy zabawe schowkiem
+    // finish clipboard handling
     if (data->iffh)
     {
 	if(data->iffh->iff_Stream)
@@ -288,13 +288,13 @@ LONG cutcopypaste(struct IClass *cl, Object *obj, int item)
 		{
                     if(data->tn->tn_Flags & TNF_LIST)
                     {
-                        // dla wszystkich poddrzew prócz glownego
+                        // for all subtrees except the root
                         if ((rc = DoMethod(obj, MUIM_Listtree_GetNr, data->tn, 0)))
                         {
                     	    len = snprintf(buffer, 1024, "<?xml version=\"1.0\" encoding=\"UTF-8\"?><%s", data->tn->tn_Name);
                             WriteChunkBytes(data->iffh, buffer, len);
                         }
-                        else  // przenosimy do buffera cale drzewo XML razem z korzeniem
+                        else  // move entire XML tree including the root to the buffer
 			    WriteChunkBytes(data->iffh, "<?xml", strlen("<?xml"));
                      
                         if ((tmp = (struct xml_data*)(data->tn->tn_User)))
@@ -320,14 +320,14 @@ LONG cutcopypaste(struct IClass *cl, Object *obj, int item)
 
                         DoMethod(obj, MUIM_LTree_Save, data->iffh, data->tn, MODE_SAVECLIPBOARD);
 
-			if(rc) // dla wszyskich wezlow procz korzenia drzewa
+                    if(rc) // for every node except the tree root
 			{
 			    len = snprintf(buffer, 1024, "\n</%s>", data->tn->tn_Name);
 			    WriteChunkBytes(data->iffh, buffer, len);
 			}
 
                     }
-                    else // dla tesktów poza nawiasami kopiujemy normalnie, nie zrzucaj±c pe³nego xmla
+                    else // for text outside tags copy normally without dumping full XML
                     {
                         char *bez_escapekodu;
                         bez_escapekodu = data->tn->tn_Name;
@@ -382,16 +382,16 @@ LONG  xmlviewertree_Paste(struct IClass *cl, Object *obj, struct MUIP_LTreeFile*
  
 //    XML_SetXmlDeclHandler(parser, decl_hndl);
 
-    // otwieramy uchwyt do pliku
+    // open the file handle
     if (OpenIFF(data->iffh, IFFF_READ) == 0)
     {
-	if (StopChunk(data->iffh, ID_FTXT, ID_CHRS) == 0)
-	{
-            XML_ParserReset(parser, 0);  // resetujemy parser
-    	    m_drzewo.drzewo = obj;       // obiekt listree
-    	    m_drzewo.tn[0]= list;        // podlista pod ktora podlaczamy
-    	    m_drzewo.depth = 0;          // zaczynamy jakby od nowa
-    	    XML_SetUserData(parser, &m_drzewo);                      // dane dla parsera
+        if (StopChunk(data->iffh, ID_FTXT, ID_CHRS) == 0)
+        {
+            XML_ParserReset(parser, 0);  // reset the parser
+                m_tree.tree = obj;       // listtree object
+                m_tree.tn[0]= list;        // sublist that becomes the attachment point
+                m_tree.depth = 0;          // start from the beginning
+                XML_SetUserData(parser, &m_tree);                      // data for the parser
     	    XML_SetElementHandler(parser, startElement, endElement);
     	    XML_SetCharacterDataHandler(parser,  default_hndl);
 

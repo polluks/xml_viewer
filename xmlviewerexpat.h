@@ -10,8 +10,11 @@
 
 
 #include <proto/expat.h>
+#include <exec/types.h>
+
 #include "api_MUI.h"
 #include "resources.h"
+#include "xmlviewerfiletype.h"
 
 #define XML_VALUES   1
 #define XML_TEXT     2
@@ -24,6 +27,8 @@ struct XMLTree
     char filename[102];                         // 102 DOS limitation
     struct MUIS_Listtree_TreeNode *tn[512];     // consider increasing if more objects appear
     int depth;
+    BOOL has_utf8_bom;
+    enum XMLViewerFileType file_type;
 };
 
 

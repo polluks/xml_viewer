@@ -255,7 +255,7 @@ ULONG MyApp_New( struct IClass *cl, Object *obj, struct opSet *msg )
 
     obj = DoSuperNew( cl, obj,
                       MUIA_Application_Title, 	"XML Viewer",
-                      MUIA_Application_Copyright, 	"(c) 2008-2025 Michal 'rzookol' Zukowski",
+                      MUIA_Application_Copyright, 	"2008-2025 Michal 'rzookol' Zukowski",
                       MUIA_Application_Author, 	"Michal Zukowski",
                       MUIA_Application_Description, 	"XML metaformat viewer",
 #ifdef __MORPHOS__
@@ -949,20 +949,22 @@ int main( int argc, char **argv )
 }
 
 
-BOOL load_json_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, char *error_buf, size_t error_buf_len )
+BOOL load_json_tree( Object *obj, BPTR fileJSON, struct XMLTree *tree, char *error_buf, size_t error_buf_len )
 {
     LONG file_size;
     char *json_buf = NULL;
     BOOL success = FALSE;
     const char *json_ptr;
-
-    if( ( file_size = Seek( fileXML, 0, OFFSET_END ) ) > 0 )
+	struct FileInfoBlock *fib;
+	
+ 	if ((fib = AllocDosObject(DOS_FIB, NULL)))
     {
-        if( Seek( fileXML, 0, OFFSET_BEGINNING ) != -1 )
+		if (ExamineFH(fileJSON, fib))
         {
-            if( ( json_buf = ( char* )AllocVec( file_size + 1, MEMF_ANY ) ) )
+		 	LONG file_size = fib->fib_Size;
+          	if( ( json_buf = ( char* )AllocVec( file_size + 1, MEMF_ANY ) ) )
             {
-                if( Read( fileXML, json_buf, file_size ) == file_size )
+                if( Read( fileJSON, json_buf, file_size ) == file_size )
                 {
                     json_buf[file_size] = '\0';
 
@@ -994,10 +996,7 @@ BOOL load_json_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, char *erro
                 snprintf( error_buf, error_buf_len, "%s", GetCatalogStr( Cat, MSG_JSON_ALLOC_ERROR, "Unable to allocate buffer for JSON file" ) );
             }
         }
-        else
-        {
-            snprintf( error_buf, error_buf_len, "%s", GetCatalogStr( Cat, MSG_JSON_REWIND_ERROR, "Unable to rewind JSON file" ) );
-        }
+		FreeDosObject(DOS_FIB, fib);
     }
     else
     {

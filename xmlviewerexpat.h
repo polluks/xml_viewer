@@ -10,10 +10,10 @@
 
 
 #include <proto/expat.h>
-#include <exec/types.h>
+#include <proto/exec.h>
+#include <proto/intuition.h>
 
 #include "api_MUI.h"
-#include "resources.h"
 #include "xmlviewerfiletype.h"
 
 #define XML_VALUES   1

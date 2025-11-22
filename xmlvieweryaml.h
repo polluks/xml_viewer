@@ -2,6 +2,9 @@
 #define XMLVIEWERYAML_H
 
 #include <dos/dos.h>
+#include <proto/exec.h>
+#include <proto/intuition.h>
+#include "api_MUI.h"
 
 #include "xmlviewerexpat.h"
 

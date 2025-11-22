@@ -3,8 +3,10 @@
 #include <string.h>
 
 #include <proto/exec.h>
+#include <proto/dos.h>
 #include <proto/locale.h>
 #include <proto/muimaster.h>
+#include <dos/dos.h>
 #include <yaml.h>
 
 #include "xmlviewerdata.h"
@@ -235,16 +237,19 @@ cleanup_root:
 
 BOOL load_yaml_tree(Object *obj, BPTR fileXML, struct XMLTree *tree, char *error_buf, size_t error_buf_len)
 {
-    LONG file_size;
     char *yaml_buf = NULL;
     BOOL success = FALSE;
     const char *input_ptr;
     size_t input_len;
 
-    if ((file_size = Seek(fileXML, 0, OFFSET_END)) > 0)
+	struct FileInfoBlock *fib;
+	
+    if ((fib = AllocDosObject(DOS_FIB, NULL)))
     {
-        if (Seek(fileXML, 0, OFFSET_BEGINNING) != -1)
+		if (ExamineFH(fileXML, fib))
         {
+			LONG file_size = fib->fib_Size;
+
             if ((yaml_buf = (char *)AllocVec(file_size + 1, MEMF_ANY)))
             {
                 if (Read(fileXML, yaml_buf, file_size) == file_size)
@@ -281,10 +286,7 @@ BOOL load_yaml_tree(Object *obj, BPTR fileXML, struct XMLTree *tree, char *error
                 snprintf(error_buf, error_buf_len, "%s", GetCatalogStr(Cat, MSG_YAML_ALLOC_ERROR, "Unable to allocate buffer for YAML file"));
             }
         }
-        else
-        {
-            snprintf(error_buf, error_buf_len, "%s", GetCatalogStr(Cat, MSG_YAML_REWIND_ERROR, "Unable to rewind YAML file"));
-        }
+		FreeDosObject(DOS_FIB, fib);
     }
     else
     {

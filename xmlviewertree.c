@@ -22,7 +22,7 @@
 #include "xmlviewerlist.h"
 #include "xmlviewerlocale.h"
 #include "api_MUI.h"
-#include "resources.h"
+
 
 #define MODE_SAVE 1
 #define MODE_LOAD 2
@@ -92,20 +92,20 @@ M_HOOK(active, APTR obj, APTR dana)
             if(tmp_xml->type & XML_VALUES)
             {
                 // fetch the attribute list
-        	if((tmp_list = tmp_xml->attr_list))
-        	{
-            	    //DBG KPrintF("Dupa %x\n", tmp_list);
-            	    DoMethod(list, MUIM_Set, MUIA_List_Quiet, TRUE);
+				if((tmp_list = tmp_xml->attr_list))
+				{
+					DoMethod(list, MUIM_Set, MUIA_List_Quiet, TRUE);
 
-	    	    for (dn = (struct DataNode*)tmp_list->mlh_TailPred;  d2 = (struct DataNode*)dn->Node.mln_Pred; dn=d2)
-	    	    {
-            	    	strcpy(tmp.name, dn->atributes);
-		    	strcpy(tmp.value, dn->values);
-              	    	//KPrintF("ddd**ddd** %s\n", dn->atributes);
-  		    	DoMethod(list, MUIM_List_InsertSingle, &tmp, MUIV_List_Insert_Bottom);
-            	    }
-    	    	    DoMethod(list, MUIM_Set, MUIA_List_Quiet, FALSE);
-            	}
+					for (dn = (struct DataNode*)tmp_list->mlh_TailPred;  d2 = (struct DataNode*)dn->Node.mln_Pred; dn=d2)
+					{
+							strcpy(tmp.name, dn->atributes);
+							strcpy(tmp.value, dn->values);
+							//KPrintF("ddd**ddd** %s\n", dn->atributes);
+						DoMethod(list, MUIM_List_InsertSingle, &tmp, MUIV_List_Insert_Bottom);
+					}
+					
+					DoMethod(list, MUIM_Set, MUIA_List_Quiet, FALSE);
+				}
     	    }
     	}
     }
@@ -444,7 +444,7 @@ LONG  xmlviewertree_Save(struct IClass *cl, Object *obj, struct MUIP_LTreeFile* 
     int mode = msg->mode;
     struct MUIS_Listtree_TreeNode *tn, *list =  (struct MUIS_Listtree_TreeNode *)msg->node;
     UWORD pos=0, i, len;
-    static int poziom=0;
+    static int level=0;
     static int czy_wart=0;
     struct DataNode *dn;
     struct MinList *tmp_list;
@@ -461,7 +461,7 @@ LONG  xmlviewertree_Save(struct IClass *cl, Object *obj, struct MUIP_LTreeFile* 
             {
 	    	if(tmp->type & XML_VALUES)
 	    	{
-            	    if ( (poziom == 0) && (mode!=MODE_SAVECLIPBOARD) )
+            	    if ( (level == 0) && (mode!=MODE_SAVECLIPBOARD) )
                     {
                         Write(fp, "<?xml", 5);
                    	if((tmp_list = tmp->attr_list))
@@ -478,15 +478,15 @@ LONG  xmlviewertree_Save(struct IClass *cl, Object *obj, struct MUIP_LTreeFile* 
     			    }
  		    	}
                         Write(fp, "?>", 2);
-                    	poziom++;
+                    	level++;
                     	DoMethod(obj, MUIM_LTree_Save, fp, tn, mode);
-                    	poziom--;
+                    	level--;
                     }
                     else
                     {
                     	if( mode == MODE_SAVEFORMATTED )
                     	{
-                    	    for (i=1; i<poziom; i++)
+                    	    for (i=1; i<level; i++)
                         	Write(fp, "\t", 1);
                     	}
 
@@ -518,13 +518,13 @@ LONG  xmlviewertree_Save(struct IClass *cl, Object *obj, struct MUIP_LTreeFile* 
                     	else
                             Write(fp, ">", 1);
 
-                    	poziom++;
+                    	level++;
                     	DoMethod(obj, MUIM_LTree_Save, fp, tn, mode);
-                    	poziom--;
+                    	level--;
 
                     	if( mode == MODE_SAVEFORMATTED )
                     	{
-                    	    for (i=1; i<poziom; i++)
+                    	    for (i=1; i<level; i++)
 			   	Write(fp, "\t", 1);
                     	}
 
@@ -551,7 +551,7 @@ LONG  xmlviewertree_Save(struct IClass *cl, Object *obj, struct MUIP_LTreeFile* 
 		    bez_escapekodu += 2;
                     if( mode == MODE_SAVEFORMATTED )
                     {
-                    	for (i=0; i<poziom; i++)
+                    	for (i=0; i<level; i++)
                             Write(fp, "\t", 1);
                	    }
         	    if (mode == MODE_SAVECLIPBOARD)

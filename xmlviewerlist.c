@@ -14,7 +14,7 @@
 #include "xmlviewerlist.h"
 #include "xmlviewerlocale.h"
 #include "api_MUI.h"
-#include "resources.h"
+
 
 // locales
 extern struct Catalog *Cat;

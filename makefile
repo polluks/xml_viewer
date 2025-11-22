@@ -2,18 +2,21 @@
 # Makefile for xmlviewer
 # Part of Plot.mcc MUI package
 # (c) 2008-2025 Michal Zukowski
-#
+#gcc -noixemul -c *.c -I. -DYAML_VERSION_MAJOR=0 -DYAML_VERSION_MINOR=2 -DYAML_VERSION_PATCH=5 -DYAML_VERSION_STRING="1.0"
 
 
 EXE = xmlviewer
 FLEXCAT = ../../ambient/ambient/FlexCat
 CC  = gcc
-CFLAGS += -noixemul -Wall
+CFLAGS += -noixemul -Wall -Ilibyaml
 #-DMEMTRACK
 LDFLAGS += -noixemul  -O3
-LIBS =   -ldebug -lyaml -liffparse
+LIBS =   -ldebug 
 
-OBJS    =  obj/logo.o  obj/xmlviewerlist.o obj/xmlviewerexpat.o obj/xmlviewerjson.o obj/xmlvieweryaml.o obj/xmlvieweriff.o obj/xmlviewerfiletype.o obj/xmlviewerdata.o obj/xmlviewertree.o obj/xmlviewerabout.o obj/cjson.o obj/$(EXE).o
+OBJS    =  obj/logo.o  obj/xmlviewerlist.o obj/xmlviewerexpat.o obj/xmlviewerjson.o obj/xmlvieweryaml.o obj/xmlvieweriff.o \
+			obj/xmlviewerfiletype.o obj/xmlviewerdata.o obj/xmlviewertree.o obj/xmlviewerabout.o \
+			libyaml/*.o \
+			obj/cjson.o obj/$(EXE).o
 
 all:    $(EXE)
 

@@ -26,6 +26,7 @@ NEWS:
 - More fixes           (0.15)
 - Locales, comments    (0.16)
 - Fixes, JSON support  (0.17)
+  YAML support, IFF support
 
 TODO:
 - Edit mode

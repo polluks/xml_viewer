@@ -1,5 +1,6 @@
 #include "xmlvieweriff.h"
 
+#include <stdio.h>
 #include <string.h>
 
 #include <proto/dos.h>
@@ -123,14 +124,17 @@ BOOL load_iff_tree(Object *obj, BPTR fileIFF, struct XMLTree *tree, char *error_
     LONG file_size;
     struct xml_data *root_data;
     BOOL success = FALSE;
-
+	struct FileInfoBlock *fib;
+	
     if (error_buf && error_buf_len)
         error_buf[0] = '\0';
 
-    if ((file_size = Seek(fileIFF, 0, OFFSET_END)) > 0)
+ 	if ((fib = AllocDosObject(DOS_FIB, NULL)))
     {
-        if (Seek(fileIFF, 0, OFFSET_BEGINNING) != -1)
+		if (ExamineFH(fileIFF, fib))
         {
+			LONG file_size = fib->fib_Size;
+
             if ((root_data = AllocXmlData(XML_VALUES)))
             {
                 tree->depth = 0;
@@ -149,14 +153,11 @@ BOOL load_iff_tree(Object *obj, BPTR fileIFF, struct XMLTree *tree, char *error_
             if (!success)
                 snprintf(error_buf, error_buf_len, "%s", GetCatalogStr(Cat, MSG_IFF_PARSE_ERROR, "Unable to parse IFF structure"));
         }
-        else
-        {
-            snprintf(error_buf, error_buf_len, "%s", GetCatalogStr(Cat, MSG_IFF_READ_ERROR, "Unable to rewind IFF file"));
-        }
+		FreeDosObject(DOS_FIB, fib);
     }
     else
     {
-        snprintf(error_buf, error_buf_len, "%s", GetCatalogStr(Cat, MSG_IFF_READ_ERROR, "Unable to rewind IFF file"));
+        snprintf(error_buf, error_buf_len, "%s", GetCatalogStr(Cat, MSG_IFF_READ_ERROR, "Unable to read IFF file"));
     }
 
     if (!success)

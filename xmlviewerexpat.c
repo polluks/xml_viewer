@@ -5,6 +5,7 @@
 ** (c) 2008 Michal Zukowski
 */
 
+#include <string.h>
 #include <proto/expat.h>
 #include <proto/exec.h>
 #include <proto/muimaster.h>

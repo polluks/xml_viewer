@@ -2,9 +2,8 @@ Short:        Simple XML viewer
 Author:       Michal Zukowski <rzookol poczta.onet.pl>
 Uploader:     Michal Zukowski <rzookol poczta onet pl>
 Type:         text/show
-Version:      0.16
-Requires:     expat.library, urltext.mcc
-Architecture: ppc-morphos >= 2.0 or 1.4.5 with update
+Version:      0.17
+Architecture: ppc-morphos >= 3.0
 
 
 XML Viewer is simply MUI application to view content of XML files.
@@ -26,10 +25,8 @@ NEWS:
 
 - More fixes           (0.15)
 - Locales, comments    (0.16)
+- Fixes, JSON support  (0.17)
 
 TODO:
 - Edit mode
 - Drag&Drop
-
-Latest expat.library:
-http://alfie.altervista.org/soft/index.html

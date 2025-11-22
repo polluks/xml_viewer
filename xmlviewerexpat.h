@@ -5,6 +5,10 @@
 ** (c) 2008 Michal Zukowski
 */
 
+#ifndef XMLVIEWEREXPAT_H
+#define XMLVIEWEREXPAT_H
+
+
 #include <proto/expat.h>
 #include "api_MUI.h"
 #include "resources.h"
@@ -41,3 +45,5 @@ void SAVEDS startElement(void *, const char *, const char **);
 void SAVEDS endElement(void *, const char *);
 void SAVEDS decl_hndl(void *, const XML_Char *, const XML_Char *, int);
 void SAVEDS comment_hndl(void *, const XML_Char *);
+
+#endif

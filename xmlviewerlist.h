@@ -5,6 +5,9 @@
 ** (c) 2008-2009 Michal Zukowski
 */
 
+#ifndef XMLVIEWERLIST_H
+#define XMLVIEWERLIST_H
+
 #include <proto/exec.h>
 #include <proto/muimaster.h>
 #include "api_MUI.h"
@@ -18,3 +21,5 @@ struct Data
 M_HOOK_h(DataDestructor)
 M_HOOK_h(DataConstructor)
 M_HOOK_h(DataDisplayer)
+
+#endif

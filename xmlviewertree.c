@@ -6,6 +6,7 @@
 */
 
 #include <stdio.h>
+#include <string.h>
 #include <proto/dos.h>
 #include <proto/exec.h>
 #include <proto/iffparse.h>

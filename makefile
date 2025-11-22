@@ -11,9 +11,9 @@ CC  = gcc
 CFLAGS += -noixemul -Wall
 #-DMEMTRACK
 LDFLAGS += -noixemul  -O3
-LIBS =   -ldebug -lcjson
+LIBS =   -ldebug 
 
-OBJS    =  obj/logo.o  obj/xmlviewerlist.o obj/xmlviewerexpat.o obj/xmlviewerjson.o obj/xmlviewertree.o obj/xmlviewerabout.o obj/$(EXE).o
+OBJS    =  obj/logo.o  obj/xmlviewerlist.o obj/xmlviewerexpat.o obj/xmlviewerjson.o obj/xmlviewertree.o obj/xmlviewerabout.o obj/cjson.o obj/$(EXE).o
 
 all:    $(EXE)
 
@@ -44,4 +44,7 @@ obj/xmlviewertree.o: xmlviewertree.c xmlviewertree.h
 	$(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlviewerabout.o: xmlviewerabout.c xmlviewerabout.h
+	$(CC) -c  $(CFLAGS) -o $@ $<
+	
+obj/cjson.o: cJSON.c cJSON.h
 	$(CC) -c  $(CFLAGS) -o $@ $<

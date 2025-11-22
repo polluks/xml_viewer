@@ -11,7 +11,7 @@
 #include <proto/muimaster.h>
 #include <mui/Listtree_mcc.h>
 
-#include <cjson/cJSON.h>
+#include "cJSON.h"
 
 #include "xmlviewerjson.h"
 

@@ -5,6 +5,8 @@
 ** (c) 2008-2009 Michal Zukowski
 */
 
+#ifndef XMLVIEWERTREE_H
+#define XMLVIEWERTREE_H
 
 #include <clib/alib_protos.h>
 #include <intuition/classusr.h>
@@ -16,3 +18,5 @@
 M_HOOK_h(active);
 struct MUIP_LTreeFile {ULONG methodid; ULONG file; ULONG node; ULONG mode;};   // gdzie file to uchwyt do pliku
 struct MUI_CustomClass *CreatexmlviewertreeClass (void);
+
+#endif

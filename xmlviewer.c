@@ -12,6 +12,7 @@
 //#define USE_INLINE_STDARG
 
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 #include <proto/exec.h>
 #include <proto/dos.h>
@@ -109,6 +110,8 @@ struct MUIP_App_FileReq
 #define MODE_SAVEFORMATTED 3
 
 #define TEMPLATE "FILE/A"
+BOOL load_xml_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, XML_Parser parser, char *error_buf, size_t error_buf_len );
+BOOL load_json_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, char *error_buf, size_t error_buf_len );
 
 void handle_arguments( int argc, char *argv[] )
 {
@@ -146,71 +149,6 @@ static BOOL is_json_file( const char *filename )
     return FALSE;
 }
 
-static BOOL load_json_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, char *error_buf, size_t error_buf_len )
-{
-    LONG file_size;
-    char *json_buf = NULL;
-    BOOL success = FALSE;
-
-    if( ( file_size = Seek( fileXML, 0, OFFSET_END ) ) > 0 )
-    {
-        if( Seek( fileXML, 0, OFFSET_BEGINNING ) != -1 )
-        {
-            if( ( json_buf = ( char* )AllocVec( file_size + 1, MEMF_ANY ) ) )
-            {
-                if( Read( fileXML, json_buf, file_size ) == file_size )
-                {
-                    json_buf[file_size] = '\0';
-
-                    if( JsonToTree( tree, tree->filename, json_buf ) )
-                    {
-                        success = TRUE;
-                    }
-                    else
-                    {
-                        snprintf( error_buf, error_buf_len, "%s", "Error parsing JSON file" );
-                        MUI_RequestA( obj, window, 0, "XML Viewer Error", "*OK", error_buf, NULL );
-                    }
-                }
-                FreeVec( json_buf );
-            }
-        }
-    }
-
-    return success;
-}
-
-static BOOL load_xml_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, XML_Parser parser, char *error_buf, size_t error_buf_len )
-{
-    char buf[BUFSIZ];
-    int done;
-    BOOL success = TRUE;
-
-    XML_ParserReset( parser, 0 );
-    XML_SetUserData( parser, tree );
-    XML_SetElementHandler( parser, startElement, endElement );
-    XML_SetCharacterDataHandler( parser,  default_hndl );
-    XML_SetXmlDeclHandler( parser, decl_hndl );
-    XML_SetCommentHandler( parser, comment_hndl );
-
-    do
-    {
-        size_t len =  Read( fileXML, buf, BUFSIZ ); //fread(buf, 1, sizeof(buf), fileXML);
-        done = len < BUFSIZ;
-        if( XML_Parse( parser, buf, len, done ) == XML_STATUS_ERROR )
-        {
-            snprintf( error_buf, error_buf_len,  "Error:\n\n%s at line %d",
-                      XML_ErrorString( XML_GetErrorCode( parser ) ), XML_GetCurrentLineNumber( parser ) );
-            MUI_RequestA( obj, window, 0, "XML Viewer Error", "*OK", error_buf, NULL );
-            success = FALSE;
-            break;
-        }
-
-    }
-    while( !done );
-
-    return success;
-}
 
 /// CreateAppClass()
 
@@ -989,6 +927,74 @@ int main( int argc, char **argv )
 
     return( 0 );
 }
+
+
+BOOL load_json_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, char *error_buf, size_t error_buf_len )
+{
+    LONG file_size;
+    char *json_buf = NULL;
+    BOOL success = FALSE;
+
+    if( ( file_size = Seek( fileXML, 0, OFFSET_END ) ) > 0 )
+    {
+        if( Seek( fileXML, 0, OFFSET_BEGINNING ) != -1 )
+        {
+            if( ( json_buf = ( char* )AllocVec( file_size + 1, MEMF_ANY ) ) )
+            {
+                if( Read( fileXML, json_buf, file_size ) == file_size )
+                {
+                    json_buf[file_size] = '\0';
+
+                    if( JsonToTree( tree, tree->filename, json_buf ) )
+                    {
+                        success = TRUE;
+                    }
+                    else
+                    {
+                        snprintf( error_buf, error_buf_len, "%s", "Error parsing JSON file" );
+                        MUI_RequestA( obj, window, 0, "XML Viewer Error", "*OK", error_buf, NULL );
+                    }
+                }
+                FreeVec( json_buf );
+            }
+        }
+    }
+
+    return success;
+}
+
+BOOL load_xml_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, XML_Parser parser, char *error_buf, size_t error_buf_len )
+{
+    char buf[BUFSIZ];
+    int done;
+    BOOL success = TRUE;
+
+    XML_ParserReset( parser, 0 );
+    XML_SetUserData( parser, tree );
+    XML_SetElementHandler( parser, startElement, endElement );
+    XML_SetCharacterDataHandler( parser,  default_hndl );
+    XML_SetXmlDeclHandler( parser, decl_hndl );
+    XML_SetCommentHandler( parser, comment_hndl );
+
+    do
+    {
+        size_t len =  Read( fileXML, buf, BUFSIZ ); //fread(buf, 1, sizeof(buf), fileXML);
+        done = len < BUFSIZ;
+        if( XML_Parse( parser, buf, len, done ) == XML_STATUS_ERROR )
+        {
+            snprintf( error_buf, error_buf_len,  "Error:\n\n%s at line %d",
+                      XML_ErrorString( XML_GetErrorCode( parser ) ), XML_GetCurrentLineNumber( parser ) );
+            MUI_RequestA( obj, window, 0, "XML Viewer Error", "*OK", error_buf, NULL );
+            success = FALSE;
+            break;
+        }
+
+    }
+    while( !done );
+
+    return success;
+}
+
 
 ///
 

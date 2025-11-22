@@ -417,7 +417,7 @@ LONG  xmlviewertree_Paste(struct IClass *cl, Object *obj, struct MUIP_LTreeFile*
 				{
 	     			    snprintf(error_buf, 100,  "Error:\n\n%s at line %d",
 	    			    XML_ErrorString(XML_GetErrorCode(parser)), XML_GetCurrentLineNumber(parser));
-                                    MUI_RequestA(_app(obj), _window(obj), 0, "XML Viewer Error", "*OK", error_buf, NULL);
+                                    MUI_RequestA(_app(obj), _window(obj), 0, GetCatalogStr( Cat, MSG_ERROR_TITLE, "XML Viewer Error" ), "*OK", error_buf, NULL);
 				}
 
 			    	FreeVec(textbuf);

@@ -62,15 +62,52 @@ static BOOL AddAttribute(struct xml_data *data, const char *attr, const char *va
     {
         if ((dn->atributes = (char *)AllocVec(strlen(attr) + 1, MEMF_ANY)))
             strcpy(dn->atributes, attr);
+        else
+        {
+            FreeVec(dn);
+            return FALSE;
+        }
 
         if ((dn->values = (char *)AllocVec(strlen(value) + 1, MEMF_ANY)))
+        {
             strcpy(dn->values, value);
+            AddHead((struct List *)data->attr_list, (struct Node *)dn);
+            return TRUE;
+        }
 
-        AddHead((struct List *)data->attr_list, (struct Node *)dn);
-        return TRUE;
+        FreeVec(dn->atributes);
+        FreeVec(dn);
     }
 
     return FALSE;
+}
+
+/// helper to insert a node into the listtree using a duplicated name
+static struct MUIS_Listtree_TreeNode *InsertTreeNode(struct XMLTree *tree, const char *name, struct xml_data *node_data, APTR parent, LONG flags)
+{
+    struct MUIS_Listtree_TreeNode *result = NULL;
+    char *node_name;
+
+    if (!tree || !tree->tree || !name || !node_data)
+        return NULL;
+
+    if (!(node_name = (char *)AllocVec(strlen(name) + 1, MEMF_ANY)))
+        return NULL;
+
+    strcpy(node_name, name);
+    result = (struct MUIS_Listtree_TreeNode *)DoMethod(tree->tree, MUIM_Listtree_Insert, node_name, (APTR)node_data, parent,
+                                                      MUIV_Listtree_Insert_PrevNode_Tail, flags);
+
+    /*
+     * Keep the duplicated name alive for the listtree node lifetime. Unlike
+     * the XML codepath where the parser supplies stable strings, our JSON
+     * names come from transient stack buffers (e.g. array indices). Freeing
+     * them immediately resulted in empty/garbled labels and invisible nodes.
+     */
+    if (!result)
+        FreeVec(node_name);
+
+    return result;
 }
 
 /// convert primitive JSON values to attributes on the node
@@ -109,6 +146,11 @@ static BOOL InsertJsonNode(struct XMLTree *tree, const char *name, cJSON *item)
 {
     struct xml_data *node_data;
     LONG flags = 0;
+    BOOL success = FALSE;
+    BOOL pushed_depth = FALSE;
+
+    if (tree->depth + 1 >= (int)(sizeof(tree->tn) / sizeof(tree->tn[0])))
+        return FALSE;
 
     if (cJSON_IsObject(item) || cJSON_IsArray(item))
         flags = TNF_LIST;
@@ -116,9 +158,7 @@ static BOOL InsertJsonNode(struct XMLTree *tree, const char *name, cJSON *item)
     if (!(node_data = AllocXmlData(XML_VALUES)))
         return FALSE;
 
-    tree->tn[tree->depth + 1] = (struct MUIS_Listtree_TreeNode *)DoMethod(tree->tree, MUIM_Listtree_Insert, name,
-                                                                           (APTR)node_data, tree->tn[tree->depth],
-                                                                           MUIV_Listtree_Insert_PrevNode_Tail, flags);
+    tree->tn[tree->depth + 1] = InsertTreeNode(tree, name, node_data, tree->tn[tree->depth], flags);
     if (!tree->tn[tree->depth + 1])
     {
         FreeXmlData(node_data);
@@ -128,13 +168,15 @@ static BOOL InsertJsonNode(struct XMLTree *tree, const char *name, cJSON *item)
     if (cJSON_IsObject(item))
     {
         cJSON *child;
+        pushed_depth = TRUE;
         tree->depth++;
         cJSON_ArrayForEach(child, item)
         {
             if (!InsertJsonNode(tree, child->string ? child->string : "<item>", child))
-                return FALSE;
+                goto cleanup;
         }
         tree->depth--;
+        pushed_depth = FALSE;
     }
     else if (cJSON_IsArray(item))
     {
@@ -142,19 +184,27 @@ static BOOL InsertJsonNode(struct XMLTree *tree, const char *name, cJSON *item)
         int idx = 0;
         char idx_name[16];
 
+        pushed_depth = TRUE;
         tree->depth++;
         cJSON_ArrayForEach(child, item)
         {
             snprintf(idx_name, sizeof(idx_name), "[%d]", idx++);
             if (!InsertJsonNode(tree, idx_name, child))
-                return FALSE;
+                goto cleanup;
         }
         tree->depth--;
+        pushed_depth = FALSE;
     }
     else
         AttachPrimitiveValue(node_data, item);
 
-    return TRUE;
+    success = TRUE;
+
+cleanup:
+    if (!success && pushed_depth && tree->depth > 0)
+        tree->depth--;
+
+    return success;
 }
 
 /// JsonToTree()
@@ -177,9 +227,7 @@ BOOL JsonToTree(struct XMLTree *tree, const char *filename, const char *json_tex
     }
 
     tree->depth = 0;
-    tree->tn[0] = (struct MUIS_Listtree_TreeNode *)DoMethod(tree->tree, MUIM_Listtree_Insert, filename,
-                                                            (APTR)root_data, MUIV_Listtree_Insert_ListNode_Root,
-                                                            MUIV_Listtree_Insert_PrevNode_Tail, TNF_LIST);
+    tree->tn[0] = InsertTreeNode(tree, filename, root_data, MUIV_Listtree_Insert_ListNode_Root, TNF_LIST);
 
     if (!tree->tn[0])
     {

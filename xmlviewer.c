@@ -537,6 +537,7 @@ ULONG MyApp_Load( struct IClass *cl, Object *obj,  struct MUIP_App_Filename *msg
     char error_buf[100];
     BPTR fileXML;
     BOOL is_json = FALSE;
+    BOOL success = FALSE;
 
     if( msg->filename )
     {
@@ -550,21 +551,27 @@ ULONG MyApp_Load( struct IClass *cl, Object *obj,  struct MUIP_App_Filename *msg
 
             m_tree.tree = lt_nodes;
             m_tree.depth = 0;
+            memset( m_tree.tn, 0, sizeof( m_tree.tn ) );
             data->last_search = -1; // reset any active search
 
             strcpy( m_tree.filename, FilePart( msg->filename ) );
 
             if( is_json )
             {
-                load_json_tree( obj, fileXML, &m_tree, error_buf, sizeof( error_buf ) );
+                success = load_json_tree( obj, fileXML, &m_tree, error_buf, sizeof( error_buf ) );
             }
             else
             {
-                load_xml_tree( obj, fileXML, &m_tree, parser, error_buf, sizeof( error_buf ) );
+                success = load_xml_tree( obj, fileXML, &m_tree, parser, error_buf, sizeof( error_buf ) );
             }
 
             DoMethod( lt_nodes, MUIM_Set,  MUIA_Listtree_Quiet, FALSE );
             DoMethod( list,  MUIM_Set,  MUIA_List_Quiet, FALSE );
+
+            if( success )
+            {
+                DoMethod( lt_nodes, MUIM_Listtree_Open, MUIV_Listtree_Open_ListNode_Root, MUIV_Listtree_Open_TreeNode_All, 0 );
+            }
 
             Close( fileXML );
         }
@@ -952,12 +959,33 @@ BOOL load_json_tree( Object *obj, BPTR fileXML, struct XMLTree *tree, char *erro
                     else
                     {
                         snprintf( error_buf, error_buf_len, "%s", "Error parsing JSON file" );
-                        MUI_RequestA( obj, window, 0, "XML Viewer Error", "*OK", error_buf, NULL );
                     }
                 }
+                else
+                {
+                    snprintf( error_buf, error_buf_len, "%s", "Error reading JSON file" );
+                }
+
                 FreeVec( json_buf );
             }
+            else
+            {
+                snprintf( error_buf, error_buf_len, "%s", "Unable to allocate buffer for JSON file" );
+            }
         }
+        else
+        {
+            snprintf( error_buf, error_buf_len, "%s", "Unable to rewind JSON file" );
+        }
+    }
+    else
+    {
+        snprintf( error_buf, error_buf_len, "%s", "JSON file is empty" );
+    }
+
+    if( !success )
+    {
+        MUI_RequestA( obj, window, 0, "XML Viewer Error", "*OK", error_buf, NULL );
     }
 
     return success;

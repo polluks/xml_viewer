@@ -1,5 +1,5 @@
 ## version $VER: xmlviever.catalog 1.0 (22.04.2009)
-## codeset 0
+## codeset 5
 ## language polski
 ## chunk AUTH Michal Zukowski
 ;
@@ -118,7 +118,6 @@ MSG_ABOUT_HOMEPAGE
 Strona domowa:
 ;Project homepage:
 ;
-MSG_UNABLETOOPENFILE 
 MSG_ERROR_TITLE
 Błąd XML Viewer
 ;XML Viewer Error
@@ -183,6 +182,7 @@ MSG_IFF_READ_ERROR
 Nie można przewinąć pliku IFF
 ;Unable to rewind IFF file
 ;
+MSG_UNABLETOOPENFILE
 Nie mogê otworzyæ
 ;Error opening
 ;

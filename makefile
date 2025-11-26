@@ -24,6 +24,7 @@ clean:
 	-rm -rf $(OBJS) $(EXE)
 locales:
 	$(FLEXCAT) catalogs/xmlviewer.cd  catalogs/polski/xmlviewer.ct catalog catalogs/polski/xmlviewer.catalog
+	$(FLEXCAT) catalogs/xmlviewer.cd  catalogs/deutsch/xmlviewer.ct catalog catalogs/deutsch/xmlviewer.catalog
 
 $(EXE): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)

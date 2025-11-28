@@ -1,0 +1,3 @@
+FROM Lstartup.obj,showilbm.o,readpict.o,ilbmr.o,unpacker.o,iffr.o,remalloc.o
+TO ram:showilbm
+LIBRARY lib:lc.lib,lib:amiga.lib

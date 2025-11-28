@@ -1,0 +1,4 @@
+FROM     LIB:LStartup.obj,Read8SVX.o,dunpack.o,iffr.o
+LIBRARY  LIB:LC.lib, LIB:Amiga.lib
+TO       Read8SVX
+

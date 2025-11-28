@@ -1,0 +1,5 @@
+FROM lib:Lstartup.obj, ilbm2raw.o, readpict.o, ilbmr.o, unpacker.o, iffr.o*
+remalloc.o
+LIBRARY lib:lc.lib, lib:amiga.lib 
+TO ilbm2raw
+

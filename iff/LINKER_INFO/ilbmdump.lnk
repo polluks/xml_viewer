@@ -1,4 +1,0 @@
-FROM lib:Lstartup.obj, ilbmdump.o, readpict.o, ilbmr.o, unpacker.o, iffr.o*
-remalloc.o, bmprintc.o
-LIBRARY lib:lc.lib, lib:amiga.lib 
-TO ilbmdump

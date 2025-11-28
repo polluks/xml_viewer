@@ -1,3 +1,0 @@
-This chunk contains data usually found in a file's .info file.
-
-Proposed by Chris Ludwig 91.12.19.

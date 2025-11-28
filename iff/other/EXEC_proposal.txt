@@ -1,3 +1,0 @@
-Proposed FORM for executable (loadseg-able) code.
-
-(reserved 8/91 by Chris Ludwig)

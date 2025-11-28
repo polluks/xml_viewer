@@ -1,4 +1,0 @@
-FROM lib:Lstartup.obj, raw2ilbm.o, putpict.o, ilbmw.o, packer.o, iffw.o
-LIBRARY lib:lc.lib, lib:amiga.lib
-TO raw2ilbm
-

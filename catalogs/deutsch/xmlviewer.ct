@@ -1,0 +1,143 @@
+## version $VER: xmlviever.catalog 1.0 (26.11.2025)
+## codeset 0
+## language deutsch
+## chunk AUTH Stefan Haubenthal
+;
+; Katalogdeskriptor für xmlviewer
+;
+MSG_WRONGEXPTATVERS
+Falsche Version von "expat.library"!\n
+;
+MSG_CUSTCLASSFAIL
+Erstellen der benutzerdefinierten Klasse fehlgeschlagen.\n
+;
+MSG_APPFAIL
+Erstellen der Anwendung fehlgeschlagen.\n
+;
+MSG_EXPATFAIL
+"expat.library" >= 4.0 kann nicht geöffnet werden\n
+;
+MSG_ASLSELECTFILE
+XML-Datei auswählen
+;
+MSG_OPENALL
+Alle öffnen
+;
+MSG_CLOSEALL
+Alle schließen
+;
+MSG_MENU_ABOUT
+Info ...
+;
+MSG_MENU_OPEN
+Öffnen ...
+;
+MSG_MENU_QUIT
+Beenden
+;
+MSG_MENU_SAVE
+Speichern ...
+;
+MSG_MENU_SAVEFORM
+Formatiert speichern ...
+;
+MSG_MENU_PROJECT
+Projekt
+;
+MSG_SEARCH_LABEL
+Suchen
+;
+MSG_SEARCH_VALUES
+Elementwerte
+;
+MSG_SEARCH_NAMES
+Elementnamen
+;
+MSG_SEARCH_ATTRIBS
+Attribute (Name und Werte)
+;
+MSG_SEARCH_PREV_HELP
+Vorheriges Element suchen.
+;
+MSG_SEARCH_PREV
+Zurück
+;
+MSG_SEARCH_NEXT_HELP
+Nächstes Element suchen.
+;
+MSG_SEARCH_NEXT
+Weiter
+;
+MSG_LIST_ATTR
+Attribut
+;
+MSG_LIST_VAL
+Wert
+;
+MSG_MENU_CUT
+Ausschneiden
+;
+MSG_MENU_COPY
+Kopieren
+;
+MSG_MENU_PASTE
+Einfügen
+;
+MSG_MENU_EDIT
+Bearbeiten
+;
+MSG_ABOUT_HOMEPAGE
+Projekt-Homepage:
+;
+MSG_UNABLETOOPENFILE
+Fehler beim Öffnen
+;
+;
+MSG_ERROR_TITLE
+XML-Viewer-Fehler
+;
+MSG_FILETYPE_UNKNOWN
+Dateityp kann nicht anhand des Headers erkannt werden.
+;
+MSG_HEADER_READ_ERROR
+Datei-Header kann nicht gelesen werden.
+;
+MSG_JSON_PARSE_ERROR
+Fehler beim Parsen der JSON-Datei
+;
+MSG_JSON_READ_ERROR
+Fehler beim Lesen der JSON-Datei
+;
+MSG_JSON_ALLOC_ERROR
+Puffer für JSON-Datei kann nicht zugewiesen werden
+;
+MSG_JSON_REWIND_ERROR
+JSON-Datei kann nicht zurückgespult werden.
+;
+MSG_JSON_EMPTY
+JSON-Datei ist leer.
+;
+MSG_YAML_INIT_ERROR
+YAML-Parser kann nicht initialisiert werden.
+;
+MSG_YAML_PARSE_ERROR
+Fehler beim Parsen der YAML-Datei
+;
+MSG_YAML_READ_ERROR
+Fehler beim Lesen der YAML-Datei
+;
+MSG_YAML_ALLOC_ERROR
+Puffer für YAML-Datei kann nicht zugewiesen werden
+;
+MSG_YAML_REWIND_ERROR
+YAML-Datei kann nicht zurückgespult werden
+;
+MSG_YAML_EMPTY
+YAML-Datei ist leer
+;
+MSG_IFF_PARSE_ERROR
+IFF-Struktur kann nicht geparst werden
+;
+MSG_IFF_READ_ERROR
+IFF-Datei kann nicht zurückgespult werden
+;

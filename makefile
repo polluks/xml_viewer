@@ -13,10 +13,10 @@ CFLAGS += -noixemul -Wall -Ilibyaml
 LDFLAGS += -noixemul  -O3
 LIBS =   -ldebug 
 
-OBJS    =  obj/logo.o  obj/xmlviewerlist.o obj/xmlviewerexpat.o obj/xmlviewerjson.o obj/xmlvieweryaml.o obj/xmlvieweriff.o \
-			obj/xmlviewerfiletype.o obj/xmlviewerdata.o obj/xmlviewertree.o obj/xmlviewerabout.o \
-			libyaml/*.o \
-			obj/cjson.o obj/$(EXE).o
+OBJS    =  obj/logo.o  obj/xmlviewerlist.o obj/xmlviewerexpat.o obj/xmlviewerjson.o obj/xmlvieweryaml.o obj/xmlvieweriff.o obj/xmlvieweriffattrs.o \
+                        obj/xmlviewerfiletype.o obj/xmlviewerdata.o obj/xmlviewertree.o obj/xmlviewerabout.o \
+                        libyaml/*.o \
+                        obj/cjson.o obj/$(EXE).o
 
 all:    $(EXE)
 
@@ -44,10 +44,13 @@ obj/xmlviewerjson.o: xmlviewerjson.c  xmlviewerjson.h
 	$(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlvieweryaml.o: xmlvieweryaml.c  xmlvieweryaml.h
-	$(CC) -c  $(CFLAGS) -o $@ $<
+        $(CC) -c  $(CFLAGS) -o $@ $<
+
+obj/xmlvieweriffattrs.o: xmlvieweriffattrs.c xmlvieweriffattrs.h
+        $(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlvieweriff.o: xmlvieweriff.c  xmlvieweriff.h
-	$(CC) -c  $(CFLAGS) -o $@ $<
+        $(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlviewerfiletype.o: xmlviewerfiletype.c  xmlviewerfiletype.h
 	$(CC) -c  $(CFLAGS) -o $@ $<

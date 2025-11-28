@@ -6,7 +6,7 @@
 
 
 EXE = xmlviewer
-FLEXCAT = ../../ambient/ambient/FlexCat
+FLEXCAT = FlexCat
 CC  = gcc
 CFLAGS += -noixemul -Wall -Ilibyaml
 #-DMEMTRACK
@@ -22,12 +22,14 @@ all:    $(EXE)
 
 clean:
 	-rm -rf $(OBJS) $(EXE)
+	
 locales:
 	$(FLEXCAT) catalogs/xmlviewer.cd  catalogs/polski/xmlviewer.ct catalog catalogs/polski/xmlviewer.catalog
 	$(FLEXCAT) catalogs/xmlviewer.cd  catalogs/deutsch/xmlviewer.ct catalog catalogs/deutsch/xmlviewer.catalog
 
 $(EXE): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
+
 
 obj/$(EXE).o: $(EXE).c xmlviewerlist.h
 	$(CC) -c  $(CFLAGS) -o $@ $<
@@ -45,13 +47,13 @@ obj/xmlviewerjson.o: xmlviewerjson.c  xmlviewerjson.h
 	$(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlvieweryaml.o: xmlvieweryaml.c  xmlvieweryaml.h
-        $(CC) -c  $(CFLAGS) -o $@ $<
+	$(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlvieweriffattrs.o: xmlvieweriffattrs.c xmlvieweriffattrs.h
-        $(CC) -c  $(CFLAGS) -o $@ $<
+	$(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlvieweriff.o: xmlvieweriff.c  xmlvieweriff.h
-        $(CC) -c  $(CFLAGS) -o $@ $<
+	$(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlviewerfiletype.o: xmlviewerfiletype.c  xmlviewerfiletype.h
 	$(CC) -c  $(CFLAGS) -o $@ $<

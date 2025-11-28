@@ -1,5 +1,5 @@
 ## version $VER: xmlviever.catalog 1.0 (22.04.2009)
-## codeset 5
+## codeset 2
 ## language polski
 ## chunk AUTH Michal Zukowski
 ;
@@ -11,15 +11,15 @@ Niepoprawna wersja \"expat.library\"!\n
 ;Wrong version of \"expat.library\"!\n
 ;
 MSG_CUSTCLASSFAIL
-Nie moÂ¿na utworzyÃ¦ klasy.\n
+Nie mo¿na utworzyæ klasy.\n
 ;Failed to create custom class.\n
 ;
 MSG_APPFAIL
-Nie moÂ¿na utworzyÃ¦ aplikacji.\n
+Nie mo¿na utworzyæ aplikacji.\n
 ;Failed to create Application.\n
 ;
 MSG_EXPATFAIL
-;Nie mogÃª otworzyÃ¦ \"expat.library\" >= 4.0\n
+;Nie mogê otworzyæ \"expat.library\" >= 4.0\n
 ;Unable to open \"expat.library\" >= 4.0\n
 ;
 MSG_ASLSELECTFILE
@@ -27,7 +27,7 @@ Wybierz plik XML:
 ;Select XML File
 ;
 MSG_OPENALL
-OtwÃ³rz wszystko
+Otwórz wszystko
 ;Open All
 ;
 MSG_CLOSEALL
@@ -43,7 +43,7 @@ Wczytaj...
 ;Open...
 ;
 MSG_MENU_QUIT
-SkoÃ±cz
+Skoñcz
 ;Quit
 ;
 MSG_MENU_SAVE
@@ -51,7 +51,7 @@ Zapisz...
 ;Save...
 ;
 MSG_MENU_SAVEFORM
-Zapisz z wciÃªciami...
+Zapisz z wciêciami...
 ;Save formatted...
 ;
 MSG_MENU_PROJECT
@@ -63,15 +63,15 @@ Szukaj
 ;Search
 ;
 MSG_SEARCH_VALUES
-WartoÂ¶ci elementÃ³w
+Warto¶ci elementów
 ;Element values
 ;
 MSG_SEARCH_NAMES
-Nazwy elementÃ³w
+Nazwy elementów
 ;Element names
 ;
 MSG_SEARCH_ATTRIBS
-Atrybuty (nazwy i wartoÂ¶ci)
+Atrybuty (nazwy i warto¶ci)
 ;Attributes (name & values)
 ;
 MSG_SEARCH_PREV_HELP
@@ -83,11 +83,11 @@ Poprzedni
 ;Prev
 ;
 MSG_SEARCH_NEXT_HELP
-Wyszukaj nastÃªpny element.
+Wyszukaj nastêpny element.
 ;Search next element.
 ;
 MSG_SEARCH_NEXT 
-NastÃªpny
+Nastêpny
 ;Next
 ;
 MSG_LIST_ATTR 
@@ -95,7 +95,7 @@ Atrybut
 ;Atribute
 ;
 MSG_LIST_VAL
-WartoÂ¶Ã¦
+Warto¶æ
 ;Value
 ;
 MSG_MENU_CUT 
@@ -118,32 +118,36 @@ MSG_ABOUT_HOMEPAGE
 Strona domowa:
 ;Project homepage:
 ;
+MSG_UNABLETOOPENFILE 
+Nie mogê otworzyæ
+;Error opening
+;
 MSG_ERROR_TITLE
-BÅ‚Ä…d XML Viewer
+B³±d XML Viewer
 ;XML Viewer Error
 ;
 MSG_FILETYPE_UNKNOWN
-Nie moÅ¼na rozpoznaÄ‡ typu pliku na podstawie nagÅ‚Ã³wka.
-;Unable to detect file type from header.
+Nie mo¿na rozpoznaæ typu pliku na podstawie nagÅ‚Ã³wka.
+;Unable to detect file type from header
 ;
 MSG_HEADER_READ_ERROR
-Nie moÅ¼na odczytaÄ‡ nagÅ‚Ã³wka pliku.
+Nie mo¿na odczytaæ nag³ówka pliku.
 ;Unable to read file header.
 ;
 MSG_JSON_PARSE_ERROR
-BÅ‚Ä…d parsowania pliku JSON
+B³±d parsowania pliku JSON
 ;Error parsing JSON file
 ;
 MSG_JSON_READ_ERROR
-BÅ‚Ä…d odczytu pliku JSON
+B³±d odczytu pliku JSON
 ;Error reading JSON file
 ;
 MSG_JSON_ALLOC_ERROR
-Brak pamiÄ™ci na bufor pliku JSON
+Brak pamiêci na bufor pliku JSON
 ;Unable to allocate buffer for JSON file
 ;
 MSG_JSON_REWIND_ERROR
-Nie moÅ¼na przewinÄ…Ä‡ pliku JSON
+Nie mo¿na przewin±æ pliku JSON
 ;Unable to rewind JSON file
 ;
 MSG_JSON_EMPTY
@@ -151,23 +155,23 @@ Plik JSON jest pusty
 ;JSON file is empty
 ;
 MSG_YAML_INIT_ERROR
-Nie moÅ¼na zainicjowaÄ‡ parsera YAML
+Nie mo¿na zainicjowaæ parsera YAML
 ;Unable to initialize YAML parser
 ;
 MSG_YAML_PARSE_ERROR
-BÅ‚Ä…d parsowania pliku YAML
+B³±d parsowania pliku YAML
 ;Error parsing YAML file
 ;
 MSG_YAML_READ_ERROR
-BÅ‚Ä…d odczytu pliku YAML
+B³±d odczytu pliku YAML
 ;Error reading YAML file
 ;
 MSG_YAML_ALLOC_ERROR
-Brak pamiÄ™ci na bufor pliku YAML
+Brak pamiêci na bufor pliku YAML
 ;Unable to allocate buffer for YAML file
 ;
 MSG_YAML_REWIND_ERROR
-Nie moÅ¼na przewinÄ…Ä‡ pliku YAML
+Nie mo¿na przewin±æ pliku YAML
 ;Unable to rewind YAML file
 ;
 MSG_YAML_EMPTY
@@ -175,14 +179,10 @@ Plik YAML jest pusty
 ;YAML file is empty
 ;
 MSG_IFF_PARSE_ERROR
-Nie moÅ¼na przeanalizowaÄ‡ struktury IFF
+Nie mo¿na przeanalizowaæ struktury IFF
 ;Unable to parse IFF structure
 ;
 MSG_IFF_READ_ERROR
-Nie moÅ¼na przewinÄ…Ä‡ pliku IFF
+Nie mo¿na przewin±æ pliku IFF
 ;Unable to rewind IFF file
-;
-MSG_UNABLETOOPENFILE
-Nie mogÃª otworzyÃ¦
-;Error opening
 ;

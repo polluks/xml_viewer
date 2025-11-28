@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include <proto/exec.h>
 #include <proto/muimaster.h>
 #include <proto/locale.h>

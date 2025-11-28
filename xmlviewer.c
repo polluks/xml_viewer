@@ -156,7 +156,7 @@ enum
 
 #ifdef __MORPHOS__
 
-static STRPTR UsedClasses[]  = {MUIC_Urltext, MUIC_Listtree, MUIC_Aboutbox, 0};
+static STRPTR UsedClasses[]  = {MUIC_Listtree, MUIC_Aboutbox, 0};
 
 #endif
 

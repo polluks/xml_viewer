@@ -115,7 +115,7 @@ static BOOL InsertYamlNode(struct XMLTree *tree, yaml_document_t *document, yaml
     }
 
 cleanup:
-    if (!success && pushed_depth && tree->depth > 0)
+    if (pushed_depth && tree->depth > 0)
         tree->depth--;
 
     return success;

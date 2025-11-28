@@ -10,6 +10,7 @@
 
 #include "xmlviewerdata.h"
 #include "xmlviewerlocale.h"
+#include "xmlvieweriffattrs.h"
 
 extern struct Catalog *Cat;
 extern Object *window;
@@ -20,8 +21,27 @@ extern Object *window;
 
 static ULONG ReadBE32(const UBYTE *buffer)
 {
-    return ((ULONG)buffer[0] << 24) | ((ULONG)buffer[1] << 16) | ((ULONG)buffer[2] << 8) | (ULONG)buffer[3];
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    ULONG value;
+
+    memcpy(&value, buffer, sizeof(value));
+    return value;
+#else
+    ULONG value;
+
+    memcpy(&value, buffer, sizeof(value));
+    return __builtin_bswap32(value);
+#endif
 }
+
+static void AddSizeAttribute(struct xml_data *node_data, ULONG chunk_size)
+{
+    char size_buf[32];
+
+    snprintf(size_buf, sizeof(size_buf), "%lu", (unsigned long)chunk_size);
+    AddAttribute(node_data, "size", size_buf);
+}
+
 
 static void IdToString(ULONG id, char *out, size_t len)
 {
@@ -80,6 +100,8 @@ static BOOL ParseIffLevel(BPTR fileIFF, ULONG level_end, struct XMLTree *tree)
             return FALSE;
         }
 
+        AddSizeAttribute(node_data, chunk_size);
+
         if (is_container)
         {
             UBYTE type_id[4];
@@ -110,9 +132,14 @@ static BOOL ParseIffLevel(BPTR fileIFF, ULONG level_end, struct XMLTree *tree)
         }
         else
         {
-            ULONG skip = chunk_size + (chunk_size & 1);
-            if (Seek(fileIFF, skip, OFFSET_CURRENT) == -1)
+            if (!ParseIffChunkAttributes(fileIFF, chunk_id, chunk_size, node_data))
                 return FALSE;
+
+            if (chunk_size & 1)
+            {
+                if (Seek(fileIFF, 1, OFFSET_CURRENT) == -1)
+                    return FALSE;
+            }
         }
     }
 

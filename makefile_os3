@@ -10,7 +10,7 @@ CFLAGS += -noixemul -Wall
 LDFLAGS += -noixemul
 LIBS = -lcjson -lyaml -liffparse
 
-OBJS    =   obj/xmlviewerlist.o obj/xmlviewerexpat.o obj/xmlviewerjson.o obj/xmlvieweryaml.o obj/xmlvieweriff.o obj/xmlviewerfiletype.o obj/xmlviewerdata.o obj/xmlviewertree.o obj/xmlviewerabout.o obj/$(EXE).o
+OBJS    =   obj/xmlviewerlist.o obj/xmlviewerexpat.o obj/xmlviewerjson.o obj/xmlvieweryaml.o obj/xmlvieweriff.o obj/xmlvieweriffattrs.o obj/xmlviewerfiletype.o obj/xmlviewerdata.o obj/xmlviewertree.o obj/xmlviewerabout.o obj/$(EXE).o
 
 all:    $(EXE)
 
@@ -33,6 +33,9 @@ obj/xmlviewerjson.o: xmlviewerjson.c  xmlviewerjson.h
         $(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlvieweryaml.o: xmlvieweryaml.c  xmlvieweryaml.h
+        $(CC) -c  $(CFLAGS) -o $@ $<
+
+obj/xmlvieweriffattrs.o: xmlvieweriffattrs.c xmlvieweriffattrs.h
         $(CC) -c  $(CFLAGS) -o $@ $<
 
 obj/xmlvieweriff.o: xmlvieweriff.c  xmlvieweriff.h

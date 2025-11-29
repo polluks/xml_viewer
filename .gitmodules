@@ -1,0 +1,6 @@
+[submodule "libyaml"]
+	path = libyaml
+	url = https://github.com/yaml/libyaml.git
+[submodule "cJSON"]
+	path = cJSON
+	url = https://github.com/DaveGamble/cJSON
